@@ -11,14 +11,15 @@ class WebSocketsController extends Controller
 {
     public function connect(Request $request) 
     {
-        $brodcaster = new PusherBroadcaster(
+        $broadcaster = new PusherBroadcaster(
             new Pusher(
                 env("PUSHER_APP_KEY"),
-                env("PUSHER_APP_KEY"),
+                env("PUSHER_APP_SECRET"),
                 env("PUSHER_APP_ID"),
                 []
             )
         );
-        return $brodcaster->validAuthenticationResponse($request, []);
+
+        return $broadcaster->validAuthenticationResponse($request, []);
     }
 }
