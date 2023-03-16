@@ -1,0 +1,30 @@
+# this is docker-compose version
+version: "3.8" 
+
+# new create database server
+services:
+
+  #Database server
+  #from env file DB_HOST = Database so we use database
+  database:
+    image: mysql:8.0
+    ports: 
+      - 3006:3306
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USERNAME=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    #last step where we are store our data
+    volumes: 
+      - db-data:/usr/lib/mysql
+  #configure redis container
+  Redis:
+    image: redis:alpine
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    ports:
+      - 6379:6379
+
+# volumn will be store our data. everytime we start and shut down our docker container we will lose our data. So make it resistant, we will need to create a volumn which will store data in our local drive
+volumes:
+  db-data: ~
